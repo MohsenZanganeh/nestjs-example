@@ -1,0 +1,57 @@
+version: "3.7"
+
+services:
+
+  # mongo:
+  #   container_name: mongo
+  #   restart: always
+  #   image: mongo:4
+  #   volumes:
+  #     - test-nest-mongo-data:/data/db
+  #   ports:
+  #     - "27027:27017"
+  #   networks:
+  #     - test-net
+  # test-nest:
+  #   container_name: test-nest
+  #   restart: always
+  #   build:
+  #     context: .
+  #     dockerfile: Dockerfile
+  #   volumes:
+  #     - ./:/app
+  #   tty: true
+  #   ports:
+  #     - "9090:3000"
+  #   environment:
+  #     - "PORT=3232"
+  #   command:
+  #     [
+  #       "sh",
+  #       "-c",
+  #       "ls && npm install && npm start:dev",
+  #     ]
+  #   networks:
+  #     - test-nest
+  postgres:
+    container_name: postgres
+    image: postgres:9.5
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_PASSWORD: password
+  mongo:
+    container_name: mongo
+    restart: always
+    image: mongo:4
+    ports:
+      - "27017:27017"
+secrets:
+  postgres_password:
+    file: ./POSTGRES_PASSWORD
+
+
+
+networks:
+  test-nest:
