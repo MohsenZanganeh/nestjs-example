@@ -1,6 +1,15 @@
 import * as mongoose from 'mongoose';
 
-export const ProductSchema = new mongoose.Schema({
-  name: String,
-  price: Number,
+const ProductSchema = new mongoose.Schema(
+  {
+    name: String,
+    price: Number,
+  },
+  { timestamps: true, versionKey: false },
+);
+ProductSchema.pre('save', (next) => {
+  console.log('-save-:');
+  next();
 });
+
+export default ProductSchema;

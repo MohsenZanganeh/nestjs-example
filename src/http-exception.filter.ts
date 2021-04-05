@@ -1,4 +1,4 @@
-const err = require('./err.json');
+import err = require('./err.json');
 import {
   ExceptionFilter,
   Catch,
@@ -16,6 +16,7 @@ export class HttpExceptionFilter implements ExceptionFilter {
 
     const statusCode = exception.getStatus();
     const message = exception.message;
+    console.log('--statusCode:', statusCode);
 
     if (statusCode < 1000) {
       response.status(400).json({
@@ -25,15 +26,15 @@ export class HttpExceptionFilter implements ExceptionFilter {
         path: request.url,
       });
     }
-
     for (let i = 0; i < err.length; i++) {
       const element = err[i];
       //   message
       if (Number(Object.keys(element)[0]) === statusCode) {
-        console.log('--element:', Object.keys(element));
+        const message = element[Object.keys(element)[0]].message;
+
         response.status(400).json({
           statusCode,
-          message: element.message,
+          message: message,
           timestamp: new Date().toISOString(),
           path: request.url,
         });

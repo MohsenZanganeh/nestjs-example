@@ -1,5 +1,5 @@
 import { Connection } from 'mongoose';
-import { ProductSchema } from '../db-mongo/schemas/product.schema';
+import ProductSchema from '../db-mongo/schemas/product.schema';
 
 export const productsProviders = [
   {

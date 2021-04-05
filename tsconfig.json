@@ -1,4 +1,6 @@
 {
+
+  "sourceRoot": "src",
   "compilerOptions": {
     "module": "commonjs",
     "declaration": true,
@@ -13,7 +15,7 @@
     "incremental": true,
     "resolveJsonModule": true,
     "paths": {
-      "@utils/*": ["utils/*"]
+      "@utils/*": ["utils/*"],
     },
     "plugins": [
       // Transform paths in output .js files

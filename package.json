@@ -27,6 +27,7 @@
     "@nestjs/swagger": "^4.8.0",
     "mongoose": "^5.12.3",
     "mysql2": "^2.2.5",
+    "nest-winston": "^1.4.0",
     "nestjs-i18n": "^8.0.11",
     "path": "^0.12.7",
     "pg": "^8.5.1",
@@ -37,7 +38,8 @@
     "sequelize-cli-typescript": "^3.2.0-c",
     "sequelize-typescript": "^2.1.0",
     "swagger-ui-express": "^4.1.6",
-    "ts-mongoose": "^0.0.24"
+    "ts-mongoose": "^0.0.24",
+    "winston": "^3.3.3"
   },
   "devDependencies": {
     "@nestjs/cli": "^7.6.0",

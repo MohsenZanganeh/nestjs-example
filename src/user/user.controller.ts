@@ -14,6 +14,8 @@ import {
   HttpException,
   UseFilters,
   HttpStatus,
+  UseInterceptors,
+  Inject,
 } from '@nestjs/common';
 import { User } from '../db-postgres/models/user.entity';
 import { UserService } from './user.service';
@@ -23,6 +25,9 @@ import { DeleteUserDto } from './dto/deleteUserDto';
 import { paramDto } from './dto/paramDto';
 import { UpdateUserDto } from './dto/updateUserDto';
 import { HttpExceptionFilter } from '../http-exception.filter';
+
+import { WINSTON_MODULE_PROVIDER } from 'nest-winston';
+import { Logger } from 'winston';
 import {
   ApiBearerAuth,
   ApiOperation,
@@ -30,33 +35,45 @@ import {
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
+import { I18nService } from 'nestjs-i18n';
 
 @ApiBearerAuth()
-@ApiTags('User')
-@Controller('user')
-@Controller()
+@ApiTags('Users')
+@Controller('users')
 export class UserController {
-  constructor(private readonly userService: UserService) {}
+  constructor(
+    @Inject(WINSTON_MODULE_PROVIDER) private readonly logger: Logger,
+    private readonly userService: UserService,
+    private readonly i18n: I18nService,
+  ) {}
 
-  @Get('/users')
+  @Get()
   @ApiOperation({ summary: 'get users' })
   @ApiResponse({ status: 403, description: 'Forbidden.' })
   getUsers(@Query() query): Promise<User[]> {
     return this.userService.getUsers();
   }
 
-  @Post('/users')
+  @Post()
   @ApiOperation({ summary: 'create user' })
   @ApiResponse({ status: 403, description: 'Forbidden.' })
   @UseFilters(new HttpExceptionFilter())
   async insertUsers(@Body() CreateUserDto: CreateUserDto): Promise<USER> {
-    // const user = await this.userService.createUser(CreateUserDto);
+    const user = await this.userService.createUser(CreateUserDto);
     // throw { status: '400' };
-    throw new HttpException('Forbidden', 1001);
-    // return user;
+
+    const message = await this.i18n.translate('user.HELLO_MESSAGE', {
+      lang: 'en',
+      args: { username: 'Toon' },
+    });
+    console.log('--message:', message);
+
+    this.logger.error('heloooooooo');
+    // throw new HttpException('Forbidden', 1001);
+    return user;
   }
 
-  @Patch('/users/:id')
+  @Patch('/:id')
   @ApiOperation({ summary: 'update user' })
   @ApiResponse({ status: 403, description: 'Forbidden.' })
   async updatesers(
@@ -69,7 +86,7 @@ export class UserController {
     }
     return 'updated Field';
   }
-  @Delete('/users/:id')
+  @Delete('/:id')
   @ApiOperation({ summary: 'delete user' })
   @ApiResponse({ status: 403, description: 'Forbidden.' })
   async deleteUser(@Param() Params: DeleteUserDto): Promise<string> {
